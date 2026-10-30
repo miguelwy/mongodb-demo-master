@@ -1,0 +1,23 @@
+{
+  "name": "mongodb-demo-hub",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Demo hub for MongoDB features, wired to a real Atlas cluster.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "vector:setup": "node demos/vector-search/cli.js setup",
+    "vector:seed": "node demos/vector-search/cli.js seed",
+    "vector:status": "node demos/vector-search/cli.js status",
+    "vector:teardown": "node demos/vector-search/cli.js teardown"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "mongodb": "^7.7.0"
+  }
+}

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MongoDB Demo Hub</title>
+  <link rel="icon" type="image/svg+xml" href="/img/mongodb-logomark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/mongo.css" />
+  <style>
+    .hero { padding: 4rem 1.25rem 2.5rem; max-width: 1100px; margin: 0 auto; position: relative; }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); max-width: 18ch; }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+    .glow { position: absolute; inset: -40px -10% auto auto; width: 420px; height: 420px; background: radial-gradient(circle, rgb(0 237 100 / 0.18), transparent 65%); pointer-events: none; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem 4rem; }
+    .demo-card { display: flex; flex-direction: column; gap: 0.75rem; text-decoration: none; color: inherit; position: relative; overflow: hidden; transition: transform 0.15s, border-color 0.15s; min-height: 210px; }
+    a.demo-card:hover { transform: translateY(-3px); border-color: var(--spring); }
+    .demo-card .go { margin-top: auto; color: var(--accent); font-weight: 600; }
+    .demo-card.soon { opacity: 0.6; border-style: dashed; }
+    .demo-card.featured { grid-column: span 2; background: linear-gradient(135deg, var(--evergreen), var(--surface) 70%); }
+    :root[data-theme='light'] .demo-card.featured { background: linear-gradient(135deg, var(--mist), var(--surface) 70%); }
+    @media (max-width: 700px) { .demo-card.featured { grid-column: auto; } }
+    .tags { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="logo" role="img" aria-label="MongoDB"></span></a>
+    <span class="spacer"></span>
+    <span class="pill" id="conn"><span class="dot pulse"></span> …</span>
+    <button class="icon-btn" data-lang-toggle></button>
+    <button class="icon-btn" data-theme-toggle data-i18n-title="theme">◐</button>
+  </header>
+
+  <section class="hero">
+    <div class="glow"></div>
+    <div class="eyebrow" data-i18n="eyebrow"></div>
+    <h1 data-i18n="headline"></h1>
+    <p class="lead" data-i18n="lead"></p>
+  </section>
+
+  <main class="wrap">
+    <div class="grid three" id="demos"></div>
+  </main>
+
+  <script type="module">
+    import { $, h, api, initTheme } from '/js/ui.js';
+    import { createI18n } from '/js/i18n.js';
+
+    const { lang, t, apply, initToggle } = createI18n({
+      pt: {
+        theme: 'Tema claro/escuro',
+        eyebrow: 'Demos ao vivo',
+        headline: 'Cada feature do MongoDB, <em>na prática</em>.',
+        lead: 'Conceito, código e prática em um cluster Atlas real.',
+        available: 'Disponível',
+        soon: 'Em breve',
+        open: 'Abrir demo →',
+        offline: 'offline',
+      },
+      en: {
+        theme: 'Light/dark theme',
+        eyebrow: 'Live demos',
+        headline: 'Every MongoDB feature, <em>in practice</em>.',
+        lead: 'Concept, code and hands-on practice on a real Atlas cluster.',
+        available: 'Available',
+        soon: 'Coming soon',
+        open: 'Open demo →',
+        offline: 'offline',
+      },
+    });
+    apply();
+    initToggle();
+    initTheme();
+
+    const local = (v) => (typeof v === 'string' ? v : v[lang] ?? v.pt);
+    const { demos, roadmap } = await api('/api/hub');
+    const grid = $('#demos');
+    demos.forEach((d, i) => grid.append(
+      h('a', { class: `card demo-card ${i === 0 ? 'featured' : ''}`, href: `${d.path}?lang=${lang}` },
+        h('div', { class: 'eyebrow' }, t('available')),
+        h('h2', {}, d.title),
+        h('p', { class: 'muted' }, local(d.description)),
+        h('div', { class: 'tags' }, d.tags.map((tag) => h('span', { class: 'tag' }, tag))),
+        h('span', { class: 'go' }, t('open'))),
+    ));
+    roadmap.forEach((d) => grid.append(
+      h('div', { class: 'card demo-card soon' },
+        h('div', { class: 'eyebrow' }, t('soon')),
+        h('h3', {}, d.title),
+        h('p', { class: 'muted' }, local(d.description))),
+    ));
+
+    const conn = $('#conn');
+    try {
+      const s = await api('/api/health');
+      conn.innerHTML = s.configured
+        ? `<span class="dot ok"></span> Atlas · MongoDB ${s.version}`
+        : `<span class="dot warn"></span> ${t('offline')}`;
+    } catch (err) {
+      conn.innerHTML = `<span class="dot err"></span> ${err.message}`;
+    }
+  </script>
+</body>
+</html>

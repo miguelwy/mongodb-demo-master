@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Presenter Setup</title>
+  <link rel="icon" type="image/svg+xml" href="/img/mongodb-logomark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/mongo.css" />
+  <style>
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .wrap section { margin-top: 2rem; }
+    .checklist { list-style: none; padding: 0; margin: 0; }
+    .checklist li { padding: 0.45rem 0; border-bottom: 1px dashed var(--border); }
+    .checklist li.ok::before { content: '● '; color: var(--spring); }
+    .checklist li.bad::before { content: '● '; color: var(--red); }
+    .checklist li:not(.ok, .bad)::before { content: '○ '; color: var(--muted); }
+    .index-row td:last-child { text-align: right; white-space: nowrap; }
+    .btns { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chips-text code { display: inline-block; margin: 0.15rem 0.2rem 0.15rem 0; }
+    .run-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+    .run-head p { margin-bottom: 0.8rem; }
+    .run-step { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); margin-bottom: 0.6rem; }
+    .run-step > summary { display: flex; align-items: center; gap: 0.8rem; padding: 0.85rem 1.1rem; cursor: pointer; font-weight: 600; }
+    .run-step > summary .tag { margin-left: auto; }
+    .run-body { padding: 0 1.1rem 1.1rem; }
+    .run-goal { color: var(--muted); margin-bottom: 0.9rem; }
+    .run-label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; font-weight: 600; color: var(--accent); margin: 1rem 0 0.35rem; }
+    .run-say { border-left: 3px solid var(--spring); padding: 0.1rem 0 0.1rem 0.9rem; margin: 0 0 0.55rem; font-size: 1.02rem; }
+    .run-body ul { margin: 0; padding-left: 1.2rem; }
+    .run-body li { margin: 0.25rem 0; }
+    .run-qa { margin: 0.45rem 0; }
+    .run-qa b { display: block; }
+    .run-next { margin-top: 1rem; padding: 0.7rem 0.9rem; border-radius: 8px; background: var(--surface-2); }
+    @media print {
+      .topbar, .btns, .wrap > section:not(:has(#runbook)) { display: none; }
+      .run-step { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="logo" role="img" aria-label="MongoDB"></span></a>
+    <span class="crumb" data-i18n="crumb"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="conn"><span class="dot pulse"></span></span>
+    <button class="icon-btn" data-lang-toggle></button>
+    <button class="icon-btn" data-theme-toggle data-i18n-title="theme">◐</button>
+  </header>
+
+  <main class="wrap">
+    <div class="eyebrow" data-i18n="eyebrow"></div>
+    <h1 data-i18n="title"></h1>
+    <p class="lead" data-i18n="lead"></p>
+    <div class="btns">
+      <a class="btn primary" id="open-demo" target="_blank" rel="noopener" data-i18n="openDemo"></a>
+    </div>
+
+    <section class="grid two">
+      <div class="card">
+        <h3 data-i18n="setupTitle"></h3>
+        <ol data-i18n="setupSteps"></ol>
+      </div>
+      <div class="card">
+        <h3 data-i18n="checklistTitle"></h3>
+        <ul class="checklist">
+          <li data-check="configured" data-i18n="check.configured"></li>
+          <li data-check="connected" data-i18n="check.connected"></li>
+          <li data-check="version" data-i18n="check.version"></li>
+          <li data-check="data" data-i18n="check.data"></li>
+          <li data-check="auto" data-i18n="check.auto"></li>
+          <li data-check="text" data-i18n="check.text"></li>
+          <li data-check="voyage" data-i18n="check.voyage"></li>
+          <li data-i18n="check.tier"></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="envTitle"></h3>
+      <div id="env"></div>
+      <div class="btns" style="margin-top:1rem">
+        <button class="btn primary" id="prepare" data-i18n="prepare"></button>
+        <button class="btn" id="seed" data-i18n="seed"></button>
+        <button class="btn" id="clear-live" data-i18n="clearLive"></button>
+        <button class="btn" id="clear-vectors" data-i18n="clearVectors"></button>
+        <button class="btn danger" id="teardown" data-i18n="teardown"></button>
+      </div>
+      <p class="muted" style="margin:0.8rem 0 0"><small data-i18n="prepareNote"></small></p>
+    </section>
+
+    <section class="card">
+      <h3 data-i18n="indexesTitle"></h3>
+      <div class="table-wrap"><table><tbody id="indexes"></tbody></table></div>
+    </section>
+
+    <section>
+      <div class="run-head">
+        <div>
+          <h2 data-i18n="runTitle"></h2>
+          <p class="muted" data-i18n="runLead"></p>
+        </div>
+        <div class="btns">
+          <button class="btn sm" id="run-toggle" data-i18n="expandAll"></button>
+          <button class="btn sm" id="run-print" data-i18n="print"></button>
+        </div>
+      </div>
+      <div id="runbook"></div>
+    </section>
+
+    <section class="grid two">
+      <div class="card">
+        <h3 data-i18n="queriesTitle"></h3>
+        <div class="chips-text" data-i18n="queries"></div>
+      </div>
+      <div class="card">
+        <h3 data-i18n="shortcutsTitle"></h3>
+        <ul data-i18n="shortcuts"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Troubleshooting</h3>
+      <table data-i18n="trouble"></table>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
