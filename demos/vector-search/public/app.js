@@ -311,7 +311,7 @@ function ComparePanel(root, { modes, chips, defaultQuery, weight = false }) {
   root.append(
     h('div', { class: 'search-box' }, input, go),
     chipRow(chips, input, run),
-    w && h('div', { class: 'controls' }, w.el),
+    w ? h('div', { class: 'controls' }, w.el) : '',
     h('div', { class: 'compare' }, cols.map((c) => c.col)));
 
   async function run() {

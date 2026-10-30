@@ -306,7 +306,7 @@ ${c.reEmbed}` },
       'Write path (DIY)': { lang: 'javascript', code: `
 ${c.diy1}
 async function saveProduct(doc) {
-  const res = await fetch('https://api.voyageai.com/v1/embeddings', {
+  const res = await fetch('https://ai.mongodb.com/v1/embeddings', {
     method: 'POST',
     headers: { Authorization: \`Bearer \${process.env.VOYAGE_API_KEY}\`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ input: [doc.description], model: 'voyage-4', input_type: 'document' }),

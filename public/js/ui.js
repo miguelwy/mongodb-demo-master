@@ -55,6 +55,8 @@ export async function busy(button, fn) {
 
 function highlight(codeEl, lang) {
   codeEl.className = `language-${lang}`;
+  // hljs skips elements it already marked, and tabs reuse the same <code>.
+  delete codeEl.dataset.highlighted;
   if (window.hljs) window.hljs.highlightElement(codeEl);
 }
 
