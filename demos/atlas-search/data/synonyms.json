@@ -1,0 +1,7 @@
+[
+  { "mappingType": "equivalent", "synonyms": ["notebook", "laptop"] },
+  { "mappingType": "equivalent", "synonyms": ["barraca", "tenda"] },
+  { "mappingType": "equivalent", "synonyms": ["tênis", "sapatilha"] },
+  { "mappingType": "equivalent", "synonyms": ["flashlight", "torch"] },
+  { "mappingType": "equivalent", "synonyms": ["sneakers", "trainers"] }
+]

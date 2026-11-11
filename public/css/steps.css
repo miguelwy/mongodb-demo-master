@@ -1,3 +1,4 @@
+/* Layout for the guided demo pages: sidebar, stepper, cover, diagrams, search results. */
 .layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); min-height: calc(100vh - 57px); }
 .sidebar { border-right: 1px solid var(--border); padding: 1.25rem 0.75rem; position: sticky; top: 57px; height: calc(100vh - 57px); overflow-y: auto; }
 .sidebar ol { list-style: none; margin: 0; padding: 0; counter-reset: step; }

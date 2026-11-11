@@ -13,7 +13,11 @@
     "vector:setup": "node demos/vector-search/cli.js setup",
     "vector:seed": "node demos/vector-search/cli.js seed",
     "vector:status": "node demos/vector-search/cli.js status",
-    "vector:teardown": "node demos/vector-search/cli.js teardown"
+    "vector:teardown": "node demos/vector-search/cli.js teardown",
+    "search:setup": "node demos/atlas-search/cli.js setup",
+    "search:seed": "node demos/atlas-search/cli.js seed",
+    "search:status": "node demos/atlas-search/cli.js status",
+    "search:teardown": "node demos/atlas-search/cli.js teardown"
   },
   "dependencies": {
     "dotenv": "^18.0.9",

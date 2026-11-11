@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas Search Demo</title>
+  <link rel="icon" type="image/svg+xml" href="/img/mongodb-logomark.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/mongo.css" />
+  <link rel="stylesheet" href="/css/steps.css" />
+  <link rel="stylesheet" href="demo.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<!-- All user-facing copy lives in i18n.js; elements here only carry data-i18n keys. -->
+<body>
+  <header class="topbar">
+    <a class="brand" href="/"><span class="logo" role="img" aria-label="MongoDB"></span></a>
+    <span class="crumb">Atlas Search</span>
+    <span class="spacer"></span>
+    <span class="pill" id="conn"><span class="dot pulse"></span></span>
+    <button class="icon-btn" id="present-toggle" data-i18n="present" data-i18n-title="presentTitle"></button>
+    <button class="icon-btn" data-lang-toggle></button>
+    <button class="icon-btn" data-theme-toggle data-i18n-title="theme">◐</button>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <ol id="step-nav"></ol>
+    </aside>
+
+    <main class="steps">
+
+      <!-- cover ─────────────────────────────────────── -->
+      <section class="step" id="cover">
+        <svg class="cover-field" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <g class="edges">
+            <line x1="850" y1="180" x2="1060" y2="230"/><line x1="850" y1="180" x2="1060" y2="380"/><line x1="850" y1="270" x2="1060" y2="230"/>
+            <line x1="850" y1="360" x2="1060" y2="380"/><line x1="850" y1="360" x2="1060" y2="520"/><line x1="850" y1="450" x2="1060" y2="380"/>
+            <line x1="850" y1="540" x2="1060" y2="520"/>
+          </g>
+          <g class="tokens">
+            <rect x="760" y="166" width="90" height="28" rx="6"/><rect class="hot" x="740" y="256" width="110" height="28" rx="6"/>
+            <rect x="780" y="346" width="70" height="28" rx="6"/><rect x="750" y="436" width="100" height="28" rx="6"/>
+            <rect x="790" y="526" width="60" height="28" rx="6"/>
+          </g>
+          <g class="nodes">
+            <circle class="hot" cx="1060" cy="230" r="9"/><circle cx="1060" cy="380" r="7"/><circle cx="1060" cy="520" r="6"/>
+          </g>
+        </svg>
+        <div class="cover-body">
+          <span class="logo cover-logo" role="img" aria-label="MongoDB"></span>
+          <div class="eyebrow">Atlas</div>
+          <h1>Atlas <em>Search</em></h1>
+          <p class="lead" data-i18n="cover.lead"></p>
+          <button class="btn primary" id="cover-start" data-i18n="cover.start"></button>
+        </div>
+      </section>
+
+      <!-- intro ─────────────────────────────────────── -->
+      <section class="step" id="intro">
+        <header>
+          <div class="eyebrow">Atlas Search</div>
+          <h2 data-i18n="intro.title"></h2>
+          <p class="lead" data-i18n="intro.lead"></p>
+        </header>
+        <div class="vs">
+          <div class="card">
+            <h3 data-i18n="intro.typedTitle"></h3>
+            <ul class="typed" data-i18n="intro.typed"></ul>
+          </div>
+          <div class="card">
+            <h3 data-i18n="intro.regexTitle"></h3>
+            <div class="example-q"><code data-i18n="intro.regexCode"></code></div>
+            <p class="muted" data-i18n="intro.regexBody"></p>
+            <span class="tag warn" data-i18n="intro.regexResult"></span>
+          </div>
+        </div>
+        <h3 class="section-title" data-i18n="intro.agendaTitle"></h3>
+        <div class="grid three" data-i18n="intro.agenda"></div>
+      </section>
+
+      <!-- concepts ──────────────────────────────────── -->
+      <section class="step" id="concepts">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.concept"></div>
+          <h2 data-i18n="concepts.title"></h2>
+          <p class="lead" data-i18n="concepts.lead"></p>
+        </header>
+
+        <h3 class="section-title" data-i18n="concepts.analyzerTitle"></h3>
+        <div class="card">
+          <svg class="diagram" viewBox="0 0 940 250" role="img" data-i18n-aria-label="concepts.analyzerTitle">
+            <defs><marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#00ED64"/></marker></defs>
+            <text class="lane" x="0" y="38" data-i18n="concepts.stageText"></text>
+            <g class="actor"><rect x="260" y="14" width="420" height="40" rx="8"/><text x="470" y="40" data-i18n="concepts.sample"></text></g>
+            <line class="msg w" x1="470" y1="58" x2="470" y2="84" marker-end="url(#aa)"/>
+            <text class="lane" x="0" y="113">TOKENIZER · standard</text>
+            <g class="chip-row">
+              <rect x="260" y="90" width="96" height="34" rx="7"/><text x="308" y="112" data-i18n="concepts.t1"></text>
+              <rect x="366" y="90" width="96" height="34" rx="7"/><text x="414" y="112" data-i18n="concepts.t2"></text>
+              <rect x="472" y="90" width="96" height="34" rx="7"/><text x="520" y="112" data-i18n="concepts.t3"></text>
+              <rect x="578" y="90" width="96" height="34" rx="7"/><text x="626" y="112" data-i18n="concepts.t4"></text>
+            </g>
+            <line class="msg w" x1="470" y1="128" x2="470" y2="154" marker-end="url(#aa)"/>
+            <text class="lane" x="0" y="183">TOKEN FILTERS</text>
+            <text class="filters" x="0" y="201">lowercase · icuFolding · stopword</text>
+            <g class="chip-row out">
+              <rect x="260" y="160" width="96" height="34" rx="7"/><text x="308" y="182" data-i18n="concepts.o1"></text>
+              <rect x="366" y="160" width="96" height="34" rx="7"/><text x="414" y="182" data-i18n="concepts.o2"></text>
+              <rect class="dropped" x="472" y="160" width="96" height="34" rx="7"/><text class="dropped" x="520" y="182" data-i18n="concepts.t3"></text>
+              <rect x="578" y="160" width="96" height="34" rx="7"/><text x="626" y="182" data-i18n="concepts.o4"></text>
+            </g>
+            <text class="sub-note" x="720" y="112" data-i18n="concepts.noteSplit"></text>
+            <text class="sub-note" x="720" y="182" data-i18n="concepts.noteFold"></text>
+            <text class="sub-note" x="720" y="200" data-i18n="concepts.noteStop"></text>
+            <text class="sub-note" x="260" y="238" data-i18n="concepts.noteQuery"></text>
+          </svg>
+        </div>
+
+        <h3 class="section-title" data-i18n="concepts.invertedTitle"></h3>
+        <div class="grid two">
+          <div class="table-wrap"><table class="inverted" data-i18n="concepts.inverted"></table></div>
+          <div class="card"><p class="muted" data-i18n="concepts.invertedBody"></p></div>
+        </div>
+
+        <h3 class="section-title" data-i18n="concepts.termsTitle"></h3>
+        <div class="grid three" data-i18n="concepts.terms"></div>
+      </section>
+
+      <!-- how ───────────────────────────────────────── -->
+      <section class="step" id="how">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.concept"></div>
+          <h2 data-i18n="how.title"></h2>
+          <p class="lead" data-i18n="how.lead"></p>
+        </header>
+        <div class="card">
+          <svg class="diagram" viewBox="0 0 940 380" role="img" aria-label="Atlas Search sequence diagram">
+            <g class="actor"><rect x="30" y="10" width="190" height="56" rx="10"/><text x="125" y="35" data-i18n="diag.app"></text><text class="sub" x="125" y="53" data-i18n="diag.appSub"></text></g>
+            <g class="actor"><rect x="375" y="10" width="190" height="56" rx="10"/><text x="470" y="35">mongod</text><text class="sub" x="470" y="53" data-i18n="diag.mongodSub"></text></g>
+            <g class="actor hl"><rect x="720" y="10" width="190" height="56" rx="10"/><text x="815" y="35">mongot</text><text class="sub" x="815" y="53" data-i18n="diag.mongotSub"></text></g>
+            <line class="life" x1="125" y1="66" x2="125" y2="370"/><line class="life" x1="470" y1="66" x2="470" y2="370"/><line class="life" x1="815" y1="66" x2="815" y2="370"/>
+            <defs>
+              <marker id="hw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#00ED64"/></marker>
+              <marker id="hr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#016BF8"/></marker>
+            </defs>
+            <text class="lane" x="0" y="94">WRITE PATH</text>
+            <text class="lbl" x="297" y="112">insertOne / updateOne</text>
+            <line class="msg w" x1="127" y1="120" x2="468" y2="120" marker-end="url(#hw)"/>
+            <text class="lbl" x="642" y="145" data-i18n="diag.sync"></text>
+            <line class="msg w" x1="472" y1="153" x2="813" y2="153" marker-end="url(#hw)"/>
+            <g class="note"><rect x="720" y="168" width="190" height="30" rx="6"/><text x="815" y="187" data-i18n="diag.analyze"></text></g>
+            <text class="lane" x="0" y="232">READ PATH</text>
+            <text class="lbl" x="297" y="248">aggregate([{ $search }])</text>
+            <line class="msg r" x1="127" y1="256" x2="468" y2="256" marker-end="url(#hr)"/>
+            <line class="msg r" x1="472" y1="256" x2="813" y2="256" marker-end="url(#hr)"/>
+            <text class="lbl" x="642" y="282" data-i18n="diag.ids"></text>
+            <line class="msg r back" x1="813" y1="290" x2="472" y2="290" marker-end="url(#hr)"/>
+            <g class="note"><rect x="375" y="302" width="190" height="30" rx="6"/><text x="470" y="321" data-i18n="diag.fetch"></text></g>
+            <text class="lbl" x="297" y="350" data-i18n="diag.docs"></text>
+            <line class="msg r back" x1="468" y1="358" x2="127" y2="358" marker-end="url(#hr)"/>
+          </svg>
+        </div>
+        <h3 class="section-title" data-i18n="how.changeTitle"></h3>
+        <div class="vs">
+          <div class="card bad"><h3 data-i18n="how.diyTitle"></h3><ul data-i18n="how.diyList"></ul></div>
+          <div class="card good"><h3 data-i18n="how.atlasTitle"></h3><ul data-i18n="how.atlasList"></ul></div>
+        </div>
+      </section>
+
+      <!-- data ──────────────────────────────────────── -->
+      <section class="step" id="data">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="data.title"></h2>
+          <p class="lead" data-i18n="data.lead"></p>
+        </header>
+        <div class="grid two">
+          <div class="stack">
+            <div class="card row">
+              <div class="stat"><b id="stat-count">–</b><span data-i18n="data.docs"></span></div>
+              <div class="stat" style="margin-left:2rem"><b id="stat-db">–</b><span>namespace</span></div>
+            </div>
+            <div data-snippet="connect"></div>
+          </div>
+          <div data-snippet="document"></div>
+        </div>
+        <h3 class="section-title" data-i18n="data.collection"></h3>
+        <div class="table-wrap"><table id="products-table"><thead data-i18n="data.thead"></thead><tbody></tbody></table></div>
+      </section>
+
+      <!-- index ─────────────────────────────────────── -->
+      <section class="step" id="index">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="index.title"></h2>
+          <p class="lead" data-i18n="index.lead"></p>
+        </header>
+        <div class="grid two">
+          <div data-snippet="createIndex"></div>
+          <div class="stack">
+            <div class="card stack">
+              <h3 data-i18n="index.live"></h3>
+              <div class="row"><button class="btn primary" id="create-index" data-i18n="index.create"></button></div>
+              <div id="index-status"></div>
+            </div>
+            <div class="table-wrap"><table data-i18n="index.types"></table></div>
+          </div>
+        </div>
+        <h3 class="section-title" data-i18n="index.wait"></h3>
+        <div data-snippet="waitIndex"></div>
+        <div class="callout tip" data-i18n="index.tipMappings"></div>
+        <div class="callout" data-i18n="index.tipAnalyzers"></div>
+      </section>
+
+      <!-- full-text ─────────────────────────────────── -->
+      <section class="step" id="fulltext">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="fulltext.title"></h2>
+          <p class="lead" data-i18n="fulltext.lead"></p>
+        </header>
+        <div id="fulltext-panel"></div>
+        <h3 class="section-title" data-i18n="code"></h3>
+        <div data-snippet="fulltext"></div>
+        <div class="callout tip" data-i18n="fulltext.tip"></div>
+      </section>
+
+      <!-- autocomplete ──────────────────────────────── -->
+      <section class="step" id="autocomplete">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="ac.title"></h2>
+          <p class="lead" data-i18n="ac.lead"></p>
+        </header>
+        <div class="grid two">
+          <div class="card stack">
+            <div class="ac-box">
+              <input type="text" id="ac-input" autocomplete="off" data-i18n-placeholder="ac.placeholder" />
+              <ul class="ac-list" id="ac-list"></ul>
+            </div>
+            <div class="chips" id="ac-chips"></div>
+            <label class="toggle"><input type="checkbox" id="ac-fuzzy" checked /> fuzzy (maxEdits: 1, prefixLength: 3)</label>
+            <div class="meta-line" id="ac-meta"></div>
+          </div>
+          <div><div class="eyebrow" data-i18n="pipeline.title"></div><div id="ac-pipeline"></div></div>
+        </div>
+        <h3 class="section-title" data-i18n="code"></h3>
+        <div data-snippet="autocomplete"></div>
+        <div class="callout tip" data-i18n="ac.tip"></div>
+      </section>
+
+      <!-- relevance ─────────────────────────────────── -->
+      <section class="step" id="relevance">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="rel.title"></h2>
+          <p class="lead" data-i18n="rel.lead"></p>
+        </header>
+        <div id="relevance-panel"></div>
+        <h3 class="section-title" data-i18n="code"></h3>
+        <div data-snippet="relevance"></div>
+        <div class="callout tip" data-i18n="rel.tip"></div>
+      </section>
+
+      <!-- facets ────────────────────────────────────── -->
+      <section class="step" id="facets">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="facets.title"></h2>
+          <p class="lead" data-i18n="facets.lead"></p>
+        </header>
+        <div id="facets-panel"></div>
+        <h3 class="section-title" data-i18n="code"></h3>
+        <div data-snippet="facets"></div>
+        <div class="callout tip" data-i18n="facets.tip"></div>
+      </section>
+
+      <!-- synonyms ──────────────────────────────────── -->
+      <section class="step" id="synonyms">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.practice"></div>
+          <h2 data-i18n="syn.title"></h2>
+          <p class="lead" data-i18n="syn.lead"></p>
+        </header>
+        <div id="synonyms-panel"></div>
+
+        <h3 class="section-title" data-i18n="syn.liveTitle"></h3>
+        <div class="grid two">
+          <div class="card stack">
+            <div><label data-i18n="syn.words"></label><input type="text" id="syn-words" data-i18n-value="syn.wordsDefault" /></div>
+            <div><label data-i18n="syn.probe"></label><input type="text" id="syn-probe" data-i18n-value="syn.probeDefault" /></div>
+            <div class="row"><button class="btn primary" id="syn-add" data-i18n="syn.addBtn"></button></div>
+            <h3 class="section-title" style="margin-top:0.5rem"><code id="syn-coll"></code></h3>
+            <ul class="syn-list" id="syn-list"></ul>
+          </div>
+          <div class="card stack">
+            <div class="row"><div class="big-timer" id="syn-timer">0.0s</div><small id="syn-state" class="muted" data-i18n="syn.waiting"></small></div>
+            <ol class="timeline" id="syn-timeline"></ol>
+          </div>
+        </div>
+        <h3 class="section-title" data-i18n="code"></h3>
+        <div data-snippet="synonyms"></div>
+        <div class="callout tip" data-i18n="syn.tip"></div>
+      </section>
+
+      <!-- summary ───────────────────────────────────── -->
+      <section class="step" id="summary">
+        <header>
+          <div class="eyebrow" data-i18n="eyebrow.summary"></div>
+          <h2 data-i18n="sum.title"></h2>
+        </header>
+        <div class="grid two">
+          <div class="card faq">
+            <h3 data-i18n="sum.faqTitle"></h3>
+            <div data-i18n="sum.faq"></div>
+          </div>
+          <div class="card">
+            <h3 data-i18n="sum.recapTitle"></h3>
+            <ul class="recap" data-i18n="sum.recap"></ul>
+          </div>
+        </div>
+        <h3 class="section-title" data-i18n="sum.docs"></h3>
+        <div class="row">
+          <a class="btn sm" target="_blank" rel="noopener" href="https://www.mongodb.com/docs/atlas/atlas-search/">Atlas Search</a>
+          <a class="btn sm" target="_blank" rel="noopener" href="https://www.mongodb.com/docs/atlas/atlas-search/analyzers/custom/">Custom analyzers</a>
+          <a class="btn sm" target="_blank" rel="noopener" href="https://www.mongodb.com/docs/atlas/atlas-search/autocomplete/">autocomplete</a>
+          <a class="btn sm" target="_blank" rel="noopener" href="https://www.mongodb.com/docs/atlas/atlas-search/facet/">facet</a>
+          <a class="btn sm" target="_blank" rel="noopener" href="https://www.mongodb.com/docs/atlas/atlas-search/synonyms/">Synonyms</a>
+          <a class="btn sm" target="_blank" rel="noopener" href="https://www.mongodb.com/docs/atlas/atlas-search/score/modify-score/">Score</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="stepper">
+    <button class="btn sm" id="prev" data-i18n="prev"></button>
+    <div class="progress"><div id="progress-bar"></div></div>
+    <small id="step-count" class="muted"></small>
+    <button class="btn sm primary" id="next" data-i18n="next"></button>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

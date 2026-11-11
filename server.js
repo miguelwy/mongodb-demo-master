@@ -41,6 +41,7 @@ app.use((err, req, res, next) => {
 
 app.listen(config.port, config.host, () => {
   console.log(`\n  MongoDB Demo Hub  ->  http://localhost:${config.port}`);
-  console.log(`  Presenter setup   ->  http://localhost:${config.port}/presenter\n`);
+  for (const d of demos) console.log(`  Presenter         ->  http://localhost:${config.port}/presenter/${d.meta.id}/`);
+  console.log();
   if (!isConfigured()) console.log('  ! MONGODB_URI missing: copy .env.example to .env\n');
 });
